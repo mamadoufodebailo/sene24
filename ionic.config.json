@@ -1,5 +1,7 @@
 {
   "name": "sene24",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title color="success">{{slogan}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-title text-capitalize="" color="success">
+    <ion-icon name="arrow-dropright"></ion-icon> politique
+  </ion-title>
+
+  <ion-card class="welcome-card" *ngFor="let actualite of actualites">
+    <ion-img [src]="actualite.photo" (click)="onActualiteDetail(actualite)"></ion-img>
+    <ion-card-header>
+      <ion-card-subtitle>{{actualite.titre}}</ion-card-subtitle>
+    </ion-card-header>
+  </ion-card>
+
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Chargement des données">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

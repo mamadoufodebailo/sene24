@@ -1,0 +1,91 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-button color="success" fill="outline" slot="start" (click)="onClose()">
+      <ion-icon name="exit"></ion-icon>
+    </ion-button>
+    <ion-title color="success">{{slogan}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-card class="welcome-card" *ngIf="actualite !== null">
+    <ion-card-header>
+      <ion-badge color="success">{{ actualite?.categorie}}</ion-badge>
+      <ion-card-title>{{ actualite?.titre}}</ion-card-title>
+    </ion-card-header>
+    <ion-img [src]="actualite?.photo"></ion-img>
+    <h4 style="color: green" text-center="">Commentaire</h4>
+    <ion-item text-center="">
+      <ion-button color="success" fill="outline" (click)="openCommentaire(actualite.id)">
+        <ion-icon slot="start" name="text"></ion-icon> Voir
+      </ion-button>
+      <ion-button color="success" fill="outline" (click)="openFormCommentaire(actualite.id)">
+        <ion-icon slot="end" name="add-circle"></ion-icon> Ajouter
+      </ion-button>
+    </ion-item>
+
+    <div [hidden]="!isViewCommentaire">
+      <ion-button expand="full" color="success" size="large" fill="outline" (click)="closeCommentaire()">
+        <ion-icon name="close"></ion-icon> Fermer
+      </ion-button>
+
+      <ion-card *ngFor="let commentaire of commentaires">
+        <ion-item>
+          <p><strong>Auteur: </strong>{{commentaire.auteur}}</p>
+        </ion-item>
+        <ion-item>
+          <p><strong>Email: </strong>{{commentaire.email}}</p>
+        </ion-item>
+        <ion-card-content>{{commentaire.message}}</ion-card-content>
+      </ion-card>
+    </div>
+
+    <div [hidden]="!isAjoutCommentaire">
+      <form [formGroup]="fgroup" (ngSubmit)="addCommentaire(fgroup.value)">
+        <ion-item>
+          <ion-label>Pseudo</ion-label>
+          <ion-input formControlName="auteur"></ion-input>
+          <span *ngIf="!fgroup.controls['auteur'].valid && fgroup.controls['auteur'].touched">
+            Pseudonyme Obligatoire !
+          </span>
+        </ion-item>
+        <ion-item>
+          <ion-label>Email</ion-label>
+          <ion-input formControlName="email"></ion-input>
+          <span *ngIf="!fgroup.controls['email'].valid && fgroup.controls['email'].touched">
+            Email Obligatoire !
+          </span>
+        </ion-item>
+        <ion-item>
+          <ion-label>Message</ion-label>
+          <ion-textarea formControlName="message"></ion-textarea>
+          <span *ngIf="!fgroup.controls['message'].valid && fgroup.controls['message'].touched">
+            Message Obligatoire !
+          </span>
+        </ion-item>
+        <ion-button expand="block" color="success" fill="outline" size="small" type="submit" [disabled]="!fgroup.valid">
+          <ion-icon name="send" slot="icon-only"></ion-icon>
+        </ion-button>
+        <ion-button expand="block" color="success" fill="outline" size="small" (click)="resetCommentaire()">
+          <ion-icon name="close" slot="icon-only"></ion-icon>
+        </ion-button>
+      </form>
+    </div>
+
+    <ion-card-content [innerHTML]="actualite?.contenu"></ion-card-content>
+  </ion-card>
+
+  <ion-card class="welcome-card" *ngIf="video !== null">
+    <ion-card-header>
+      <ion-card-title>{{ video?.titre}}</ion-card-title>
+    </ion-card-header>
+    <ion-img [src]="video?.photo"></ion-img>
+    <iframe [src]="video?.url" allowusermedia allowtransparency="" allowfullscreen></iframe>
+    <ion-card-content [innerHTML]="video?.contenu"></ion-card-content>
+  </ion-card>
+
+  <ion-infinite-scroll [disabled]="!isViewCommentaire" (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

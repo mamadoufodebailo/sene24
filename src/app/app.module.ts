@@ -8,6 +8,12 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import {ApiRepositoryService} from "./repository/api-repository.service";
+import {HttpClientModule} from "@angular/common/http";
+import {IonicStorageModule} from "@ionic/storage";
+import {PageSuiteDetailPageModule} from "./page-suite-detail/page-suite-detail.module";
+import {GestionRepositoryService} from "./repository/gestion-repository.service";
+import {ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [AppComponent],
@@ -15,12 +21,18 @@ import { AppRoutingModule } from './app-routing.module';
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
-    AppRoutingModule
+    AppRoutingModule,
+      HttpClientModule,
+      ReactiveFormsModule,
+      IonicStorageModule.forRoot(),
+      PageSuiteDetailPageModule
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+      ApiRepositoryService,
+      GestionRepositoryService
   ],
   bootstrap: [AppComponent]
 })
